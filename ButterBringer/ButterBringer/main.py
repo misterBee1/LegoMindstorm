@@ -1,7 +1,7 @@
 #!/usr/bin/env pybricks-micropython
-from ev3dev.ev3 import *
 from pybricks.hubs import EV3Brick
-from pybricks.ev3devices import (Motor, LargeMotor, MediumMotor, TouchSensor, ColorSensor,
+from pybricks.hubs import EV3Brick
+from pybricks.ev3devices import (Motor, TouchSensor, ColorSensor,
                                  InfraredSensor, UltrasonicSensor, GyroSensor)
 from pybricks.parameters import Port, Stop, Direction, Button, Color
 from pybricks.tools import wait, StopWatch, DataLog
@@ -14,26 +14,29 @@ from pybricks.media.ev3dev import SoundFile, ImageFile
 # Click "Open user guide" on the EV3 extension tab for more information.
 
 
+
 # Create your objects here.
 ev3 = EV3Brick()
-
-#Program writing for testing
 touchSens1 = TouchSensor(Port.S1)
 touchSens2 = TouchSensor(Port.S2)
 colourBlindBoi = ColorSensor(Port.S3)
 sonic = UltrasonicSensor(Port.S4)
-mediumBoi = MediumMotor(Port.A)
-bigBoi1 = LargeMotor(Port.B)
-bigBoi2 = LargeMotor(Port.C)
+mediumBoi = Motor(Port.A)
+bigBoi1 = Motor(Port.B)
+bigBoi2 = Motor(Port.C)
 
-Sound.tone(1500, 2000)
+#Program writing for testing
+def program():
+    while not touchSens1.pressed():
+        while not touchSens2.pressed():
+            bigBoi1.stop()
+            bigBoi2.stop()
+            mediumBoi.stop()
 
-while (touchSens1.value() == 1) or (touchSens2.value() == 1):
-    bigBoi1.run_forever(speed_sp = 20)
-    bigBoi2.run_forever(speed_sp = 20)
-    mediumBoi.run_forever(speed_sp = 20)
-
-bigBoi1.stop(stop_action='brake')
-bigBoi2.stop(stop_action='brake')
-mediumBoi.stop(stop_action='brake')
+        bigBoi1.run(speed = 20)
+        bigBoi2.run(speed = 20)
+        mediumBoi.run(speed = 20)
+    
+    ev3.speaker.beep()
+program()
 
